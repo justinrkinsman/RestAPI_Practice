@@ -3,6 +3,7 @@ import 'dotenv/config'
 import cors from 'cors'
 import express from 'express'
 import models from './models'
+import routes from './routes'
 
 const app = express()
 
@@ -16,17 +17,12 @@ app.use((req, res, next) => {
     }
     next()
 })
+app.use('/session', routes.session)
+app.use('/users', routes.user)
+app.use('/messages', routes.message)
 
 app.get('/', (req, res) => {
     return res.redirect('/users')
-})
-
-app.get('/users', (req, res) => {
-    return res.send(Object.values(req.context.models.users))
-})
-
-app.get('/users/:userId', (req, res) => {
-    return res.send(res.send(req.context.models.users[req.params.userId]))
 })
 
 app.delete('/users/:userId', (req, res) => {
